@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        # with:
-        #   path: etl_core
 
       - name: Install Dependencies
         run: |
@@ -40,12 +38,5 @@ jobs:
             export PYTHONPATH=$PYTHONPATH:.
 
             echo "Running unit tests..."
-            echo PYTHONPATH is $PYTHONPATH
-            echo PATH is $PATH
-            echo "Python version:"
-            python --version
-            echo "current: $PWD"
-            echo "Files in current directory:"
-            ls -la
             pytest tests/ -v
           EOF
