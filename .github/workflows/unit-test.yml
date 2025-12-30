@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Install Dependencies
         run: |
           su airflow << 'EOF'
@@ -28,7 +28,7 @@ jobs:
             echo "Installing test dependencies..."
             pip install pytest pytest-cov
           EOF
-      
+
       - name: Run Unit Tests
         run: |
           su airflow << 'EOF'
