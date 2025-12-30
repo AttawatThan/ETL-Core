@@ -43,5 +43,7 @@ jobs:
             echo "Python version:"
             python --version
             echo "current: $PWD"
+            echo "Files in current directory:"
+            ls -la
             pytest tests/ -v
           EOF
