@@ -20,15 +20,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Install dependencies
-        env:
-          PIP_ROOT_USER_ACTION: ignore
+      - name: Install Dependencies and Run Tests
         run: |
-          # We add --break-system-packages to force installation even if Airflow tries to block it
-          pip install pytest pytest-cov --break-system-packages
-      
-      - name: Run unit tests
-        env:
-          PYTHONPATH: .
-        run: |
-          pytest tests/ -v
+          su airflow << 'EOF'
+            # A. Add the user's local bin to PATH (where pip installs things)
+            export PATH=$PATH:/home/airflow/.local/bin
+            
+            # B. Install testing tools (as airflow user)
+            echo "Installing dependencies..."
+            pip install pytest pytest-cov
+            
+            # C. Set PYTHONPATH so tests can find your code
+            export PYTHONPATH=$PYTHONPATH:.
+            
+            # D. Run the tests
+            echo "Running tests..."
+            pytest tests/ -v
+          EOF
