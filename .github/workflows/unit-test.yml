@@ -24,7 +24,8 @@ jobs:
         env:
           PIP_ROOT_USER_ACTION: ignore
         run: |
-          pip install pytest pytest-cov
+          # We add --break-system-packages to force installation even if Airflow tries to block it
+          pip install pytest pytest-cov --break-system-packages
       
       - name: Run unit tests
         env:
