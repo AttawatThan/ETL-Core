@@ -1,4 +1,4 @@
-from etl_core.constants.audit_fields import AuditField
+from constants.audit_fields import AuditField
 
 
 def test_audit_field_values():
