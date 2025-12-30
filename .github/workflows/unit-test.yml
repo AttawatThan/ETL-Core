@@ -35,7 +35,7 @@ jobs:
             # Set PATH for airflow user
             export PATH=$PATH:/home/airflow/.local/bin
             # Set PYTHONPATH to include the etl_core module
-            # export PYTHONPATH=$PYTHONPATH:.
+            export PYTHONPATH=$PYTHONPATH:.
 
             echo "Running unit tests..."
             echo PYTHONPATH is $PYTHONPATH
