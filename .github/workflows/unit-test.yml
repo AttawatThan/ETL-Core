@@ -19,8 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          path: etl_core
+        # with:
+        #   path: etl_core
 
       - name: Install Dependencies
         run: |
