@@ -1,0 +1,49 @@
+name: ETL Core Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/attawatthan/airflow:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      # Require: This must be here for actions/checkout to work
+      options: --user root
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Fix Permission issues
+      - name: Transfer ownership to airflow user
+        run: chown -R airflow:root .
+
+      - name: Install Dependencies
+        run: |
+          su airflow << 'EOF'
+            export PATH=$PATH:/home/airflow/.local/bin
+
+            echo "Installing test dependencies..."
+            pip install pytest pytest-cov
+          EOF
+
+      - name: Run Unit Tests
+        run: |
+          su airflow << 'EOF'
+            # Set PATH for airflow user
+            export PATH=$PATH:/home/airflow/.local/bin
+            # Set PYTHONPATH to include the etl_core module
+            export PYTHONPATH=$PYTHONPATH:.
+
+            echo "Running unit tests..."
+            pytest tests/ -v
+          EOF
