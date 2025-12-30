@@ -1,4 +1,4 @@
-from etl_core.constants.environments import Environment
+from constants.environments import Environment
 
 
 def test_environment_values():
