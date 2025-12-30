@@ -38,5 +38,6 @@ jobs:
             export PYTHONPATH=$PYTHONPATH:.
 
             echo "Running unit tests..."
+            echo PYTHONPATH is $PYTHONPATH
             pytest tests/ -v
           EOF
