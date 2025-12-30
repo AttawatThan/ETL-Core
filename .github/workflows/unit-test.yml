@@ -14,15 +14,20 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+      # Require: This must be here for actions/checkout to work
+      options: --user root
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       
       - name: Install dependencies
+        env:
+          PIP_ROOT_USER_ACTION: ignore
         run: |
-          pip install --user pytest pytest-cov
-          echo "/home/airflow/.local/bin" >> $GITHUB_PATH
+          pip install pytest pytest-cov
       
       - name: Run unit tests
+        env:
+          PYTHONPATH: .
         run: |
           pytest tests/ -v
