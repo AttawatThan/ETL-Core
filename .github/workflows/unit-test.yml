@@ -20,20 +20,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Install Dependencies and Run Tests
+      - name: Install Dependencies
         run: |
           su airflow << 'EOF'
-            # A. Add the user's local bin to PATH (where pip installs things)
             export PATH=$PATH:/home/airflow/.local/bin
-            
-            # B. Install testing tools (as airflow user)
-            echo "Installing dependencies..."
+
+            echo "Installing test dependencies..."
             pip install pytest pytest-cov
-            
-            # C. Set PYTHONPATH so tests can find your code
+          EOF
+      
+      - name: Run Unit Tests
+        run: |
+          su airflow << 'EOF'
+            # Set PATH for airflow user
+            export PATH=$PATH:/home/airflow/.local/bin
+            # Set PYTHONPATH to include the etl_core module
             export PYTHONPATH=$PYTHONPATH:.
-            
-            # D. Run the tests
-            echo "Running tests..."
+
+            echo "Running unit tests..."
             pytest tests/ -v
           EOF
