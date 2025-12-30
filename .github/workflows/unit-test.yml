@@ -1,0 +1,28 @@
+name: ETL Core Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/attawatthan/airflow:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      options: --user root:root
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-cov
+      
+      - name: Run unit tests
+        run: |
+          pytest tests/ -v
