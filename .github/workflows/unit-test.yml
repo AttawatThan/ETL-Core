@@ -20,6 +20,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Fix Permission issues
+      - name: Transfer ownership to airflow user
+        run: chown -R airflow:root .
+
       - name: Install Dependencies
         run: |
           su airflow << 'EOF'
