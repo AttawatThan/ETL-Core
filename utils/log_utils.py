@@ -3,7 +3,7 @@ import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Optional, Union
-from utils.file_system import FileSystem
+from etl_core.utils.file_system import FileSystem
 
 
 def setup_logging(
