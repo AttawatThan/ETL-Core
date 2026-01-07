@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2026-01-07
+### Fixed
+- Edit import path at `log_utils' module
+- change file name from `log_utils` to `log_util`
+
 ## [0.2.0] - 2026-01-06
 ### Added
 - Added `file_system` module.
