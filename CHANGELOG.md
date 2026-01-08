@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2025-01-08
+### Added
+- Add `DatabaseEngineFactory` module it's module with get engine from Airflow connection
+
 ## [0.2.1] - 2026-01-07
 ### Fixed
 - Edit import path at `log_utils' module
