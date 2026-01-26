@@ -44,8 +44,15 @@ jobs:
             ls -la
             # Set PATH for airflow user
             export PATH=$PATH:/home/airflow/.local/bin
-            # Set PYTHONPATH to include the etl_core module
-            export PYTHONPATH=$PYTHONPATH:.
+            
+            # Create symlink in parent directory so etl_core imports work
+            cd ..
+            ln -sf ETL-Core etl_core
+            cd ETL-Core
+            
+            # Set PYTHONPATH to parent directory
+            export PYTHONPATH=$PYTHONPATH:$(dirname $(pwd))
+            echo "PYTHONPATH: $PYTHONPATH"
 
             echo "Running unit tests..."
             pytest tests/ -v
