@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from utils.file_system import FileSystem
+from etl_core.utils.file_system import FileSystem
 
 class TestFileSystem:
     """TestSuite for the FileSystem utility class.
