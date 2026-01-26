@@ -25,19 +25,20 @@ jobs:
 
       - name: Setup and Run Tests
         run: |
-          # Rename directory to match module name
+          # Create symlink in parent directory so etl_core imports work
           CURRENT_DIR=$(pwd)
           PARENT_DIR=$(dirname "$CURRENT_DIR")
           
           cd "$PARENT_DIR"
-          mv ETL-Core etl_core
+          ln -s ETL-Core etl_core
+          cd ETL-Core
           
-          # Change ownership and install dependencies
-          chown -R airflow:root etl_core
-          cd etl_core
+          # Change ownership
+          chown -R airflow:root .
           
           echo "Current directory: $(pwd)"
-          ls -la
+          echo "Symlink created:"
+          ls -la "$PARENT_DIR" | grep etl_core
           
           # Install dependencies and run tests as airflow user
           su airflow << 'EOF'
