@@ -29,10 +29,11 @@ jobs:
           cd ..
           mv ETL-Core etl_core
           chown -R airflow:root etl_core
+          ls -la
 
       - name: Install Dependencies
-        working-directory: ../etl_core
         run: |
+          cd ../etl_core
           su airflow << 'EOF'
             export PATH=$PATH:/home/airflow/.local/bin
 
@@ -41,8 +42,8 @@ jobs:
           EOF
 
       - name: Run Unit Tests
-        working-directory: ../etl_core
         run: |
+          cd ../etl_core
           su airflow << 'EOF'
             echo "current path: $(pwd)"
             echo "Listing files:"
