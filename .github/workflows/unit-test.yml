@@ -47,8 +47,9 @@ jobs:
             ls -la
             echo "---"
             
-            # Add current directory to PYTHONPATH so imports work
-            export PYTHONPATH=$PYTHONPATH:$(pwd)
+            # Add parent directory to PYTHONPATH so imports work
+            PARENT_DIR=$(dirname $(pwd))
+            export PYTHONPATH=$PYTHONPATH:$PARENT_DIR
             echo "PYTHONPATH: $PYTHONPATH"
             echo "---"
 
