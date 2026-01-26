@@ -23,13 +23,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Rename directory to match module name
-      - name: Rename directory to etl_core
-        run: |
-          cd ..
-          mv ETL-Core etl_core
-          cd etl_core
-
       # Fix Permission issues
       - name: Transfer ownership to airflow user
         run: chown -R airflow:root .
