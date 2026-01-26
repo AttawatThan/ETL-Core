@@ -7,7 +7,7 @@ from airflow.exceptions import AirflowNotFoundException
 from sqlalchemy import text
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import SQLAlchemyError
-from etl_core.utils.log_utils import setup_logging
+from etl_core.utils.log_util import setup_logging
 
 logger = setup_logging(__name__)
 
