@@ -23,38 +23,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Rename directory to match module name
-      - name: Rename directory to etl_core
+      - name: Setup and Run Tests
         run: |
-          cd ..
+          # Rename directory to match module name
+          CURRENT_DIR=$(pwd)
+          PARENT_DIR=$(dirname "$CURRENT_DIR")
+          
+          cd "$PARENT_DIR"
           mv ETL-Core etl_core
+          
+          # Change ownership and install dependencies
           chown -R airflow:root etl_core
           cd etl_core
-          echo "Current directory after rename:"
-          pwd
-          echo "Listing files:"
+          
+          echo "Current directory: $(pwd)"
           ls -la
-
-      - name: Install Dependencies
-        run: |
-          cd etl_core/
+          
+          # Install dependencies and run tests as airflow user
           su airflow << 'EOF'
             export PATH=$PATH:/home/airflow/.local/bin
-
+            
             echo "Installing test dependencies..."
             pip install pytest pytest-cov
-          EOF
-
-      - name: Run Unit Tests
-        run: |
-          cd etl_core
-          su airflow << 'EOF'
-            echo "current path: $(pwd)"
-            echo "Listing files:"
-            ls -la
             
-            # Set PATH for airflow user
-            export PATH=$PATH:/home/airflow/.local/bin
+            echo "current path: $(pwd)"
             
             # Set PYTHONPATH to parent directory so etl_core module can be imported
             export PYTHONPATH=$PYTHONPATH:$(dirname $(pwd))
