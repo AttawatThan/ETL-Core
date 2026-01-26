@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd etl_core/
+          cd /__w/ETL-Core/etl_core
           su airflow << 'EOF'
             export PATH=$PATH:/home/airflow/.local/bin
 
@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          cd etl_core/
+          cd /__w/ETL-Core/etl_core
           su airflow << 'EOF'
             echo "current path: $(pwd)"
             echo "Listing files:"
