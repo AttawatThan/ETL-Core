@@ -23,11 +23,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Fix Permission issues
-      - name: Transfer ownership to airflow user
-        run: chown -R airflow:root .
+      # Rename directory to match module name
+      - name: Rename directory to etl_core
+        run: |
+          cd ..
+          mv ETL-Core etl_core
+          chown -R airflow:root etl_core
 
       - name: Install Dependencies
+        working-directory: ../etl_core
         run: |
           su airflow << 'EOF'
             export PATH=$PATH:/home/airflow/.local/bin
@@ -37,6 +41,7 @@ jobs:
           EOF
 
       - name: Run Unit Tests
+        working-directory: ../etl_core
         run: |
           su airflow << 'EOF'
             echo "current path: $(pwd)"
@@ -45,15 +50,13 @@ jobs:
             
             # Set PATH for airflow user
             export PATH=$PATH:/home/airflow/.local/bin
-            cd ..
-            mv ETL-Core etl_core
-            cd etl_core
-            echo "current path: $(pwd)"
-            echo "Listing files:"
-            ls -la
-            export PYTHONPATH=$(pwd):$PYTHONPATH
-            echo "PYTHONPATH is set to: $PYTHONPATH"
+            
+            # Set PYTHONPATH to parent directory so etl_core module can be imported
+            export PYTHONPATH=$PYTHONPATH:$(dirname $(pwd))
+            echo "PYTHONPATH: $PYTHONPATH"
 
             echo "Running unit tests..."
+            pytest tests/ -v
+          EOF            echo "Running unit tests..."
             pytest tests/ -v
           EOF
