@@ -41,16 +41,21 @@ jobs:
           su airflow << 'EOF'
             # Set PATH for airflow user
             export PATH=$PATH:/home/airflow/.local/bin
-            # Set PYTHONPATH to include the parent directory so etl_core module can be found
-            export PYTHONPATH=$PYTHONPATH:/github/workspace/..
+            
+            # Get the current workspace directory
+            WORKSPACE_DIR=$(pwd)
+            PARENT_DIR=$(dirname "$WORKSPACE_DIR")
+            
+            # Set PYTHONPATH to include the parent directory
+            export PYTHONPATH=$PYTHONPATH:$PARENT_DIR
 
             # Create a symbolic link in the parent directory if it doesn't exist
-            cd /github/workspace/..
+            cd "$PARENT_DIR"
             if [ ! -L "etl_core" ] && [ ! -d "etl_core" ]; then
-              ln -s /github/workspace etl_core
+              ln -s "$WORKSPACE_DIR" etl_core
             fi
 
-            cd /github/workspace
+            cd "$WORKSPACE_DIR"
             echo "Running unit tests..."
             pytest tests/ -v
           EOF
