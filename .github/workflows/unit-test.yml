@@ -42,12 +42,17 @@ jobs:
             echo "current path: $(pwd)"
             echo "Listing files:"
             ls -la
+            
             # Set PATH for airflow user
             export PATH=$PATH:/home/airflow/.local/bin
-            
-            # Set PYTHONPATH to parent directory so etl_core module can be imported
-            export PYTHONPATH=$PYTHONPATH:$(dirname $(pwd))
-            echo "PYTHONPATH: $PYTHONPATH"
+            cd ..
+            mv ETL-Core etl_core
+            cd etl_core
+            echo "current path: $(pwd)"
+            echo "Listing files:"
+            ls -la
+            export PYTHONPATH=$(pwd):$PYTHONPATH
+            echo "PYTHONPATH is set to: $PYTHONPATH"
 
             echo "Running unit tests..."
             pytest tests/ -v
