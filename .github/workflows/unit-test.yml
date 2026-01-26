@@ -29,6 +29,10 @@ jobs:
           cd ..
           mv ETL-Core etl_core
           chown -R airflow:root etl_core
+          cd etl_core
+          echo "Current directory after rename:"
+          pwd
+          echo "Listing files:"
           ls -la
 
       - name: Install Dependencies
