@@ -39,19 +39,13 @@ jobs:
       - name: Run Unit Tests
         run: |
           su airflow << 'EOF'
-            export PATH=$PATH:/home/airflow/.local/bin
-            
-            # Debug: Show current directory and files
-            echo "Current directory: $(pwd)"
-            echo "Files in current directory:"
+            echo "current path: $(pwd)"
+            echo "Listing files:"
             ls -la
-            echo "---"
-            
-            # Add parent directory to PYTHONPATH so imports work
-            PARENT_DIR=$(dirname $(pwd))
-            export PYTHONPATH=$PYTHONPATH:$PARENT_DIR
-            echo "PYTHONPATH: $PYTHONPATH"
-            echo "---"
+            # Set PATH for airflow user
+            export PATH=$PATH:/home/airflow/.local/bin
+            # Set PYTHONPATH to include the etl_core module
+            export PYTHONPATH=$PYTHONPATH:.
 
             echo "Running unit tests..."
             pytest tests/ -v
