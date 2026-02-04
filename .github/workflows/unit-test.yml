@@ -23,36 +23,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup and Run Tests
+      - name: Setup
         run: |
-          # Create symlink in parent directory so etl_core imports work
-          CURRENT_DIR=$(pwd)
-          PARENT_DIR=$(dirname "$CURRENT_DIR")
-          
-          cd "$PARENT_DIR"
-          ln -s ETL-Core etl_core
-          cd ETL-Core
-          
-          # Change ownership
+          # Change ownership first
           chown -R airflow:root .
           
           echo "Current directory: $(pwd)"
-          echo "Symlink created:"
-          ls -la "$PARENT_DIR" | grep etl_core
+          echo "Directory contents:"
+          ls -la
           
-          # Install dependencies and run tests as airflow user
+          # Install dependencies as airflow user
           su airflow << 'EOF'
             export PATH=$PATH:/home/airflow/.local/bin
             
             echo "Installing test dependencies..."
             pip install pytest pytest-cov
-            
-            echo "current path: $(pwd)"
-            
-            # Set PYTHONPATH to parent directory so etl_core module can be imported
-            export PYTHONPATH=$PYTHONPATH:$(dirname $(pwd))
-            echo "PYTHONPATH: $PYTHONPATH"
+          EOF
 
+      - name: Run Tests
+        run: |
+          # Run tests as airflow user
+          su airflow << 'EOF'
+            export PATH=$PATH:/home/airflow/.local/bin
+            
+            # Install the package in editable mode so imports work correctly
+            pip install -e .
+            
             echo "Running unit tests..."
-            pytest tests/ -v
+            pytest tests/ -v --tb=short
           EOF
