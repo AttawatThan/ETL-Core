@@ -50,5 +50,5 @@ jobs:
             pip install -e .
             
             echo "Running unit tests..."
-            pytest tests/ -v --tb=short
+            pytest etl_core/tests -v
           EOF
