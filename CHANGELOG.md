@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-03-04
+### Added
+- Added `number_util` module with `round_half_up` and `round_half_down` functions for deterministic rounding behavior.
+
 ## [0.3.0] - 2025-01-08
 ### Added
 - Add `DatabaseEngineFactory` module it's module with get engine from Airflow connection

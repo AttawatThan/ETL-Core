@@ -7,4 +7,4 @@ Core utilities and constants for the ETL pipeline.
 
 
 __author__ = "MakaGunz"
-__version__ = "0.3.0"
+__version__ = "0.4.0"
